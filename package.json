@@ -1,0 +1,29 @@
+{
+  "name": "webhook-socket",
+  "version": "1.0.0",
+  "description": "Tiny server for receiving webhook events over a socket connection",
+  "main": "out/index.js",
+  "repository": "https://github.com/EricRabil/webhook-socket.git",
+  "scripts": {
+    "test": "mocha -r ts-node/register tests/*.test.ts"
+  },
+  "author": "EricRabil <ericjrabil@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "express-uws": "^3.0.1",
+    "uws": "^10.148.1"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.4",
+    "@types/express": "^4.16.0",
+    "@types/mocha": "^5.2.5",
+    "@types/uws": "^0.13.2",
+    "axios": "^0.18.0",
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0",
+    "ts-node": "^7.0.0",
+    "typescript": "^2.9.2"
+  }
+}
