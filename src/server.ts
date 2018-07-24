@@ -4,15 +4,10 @@ import uws from "uws";
 import { RequestHandler, Request } from "../node_modules/@types/express-serve-static-core";
 import { Server } from "http";
 import { resolve } from "dns";
+import Configuration from "./config";
 
 const server = express();
 require('express-uws')(server);
-
-export interface Configuration {
-    websocketToken: string;
-    whitelist: string[];
-    port: number;
-}
 
 declare module "express-serve-static-core" {
     interface _WebSocket extends WebSocket {
@@ -32,7 +27,7 @@ export default class ProxyServer {
     private baseServer: Server;
     private sockets: WebSocket[];
 
-    public constructor(public conf: Configuration) {
+    public constructor() {
     }
 
     public start(): Promise<void> {
@@ -53,7 +48,7 @@ export default class ProxyServer {
                     try {
                         // token validation
                         const {token} = JSON.parse(msg.toString());
-                        if (token !== this.conf.websocketToken) {
+                        if (token !== Configuration.websocketToken) {
                             console.log("Blocked.");
                             return ws.close();
                         }
@@ -72,7 +67,7 @@ export default class ProxyServer {
             
             // checks that this is a whitelisted proxy url
             server.use((req, res, next) => {
-                if (!this.conf.whitelist.includes(req.path)) {
+                if (!Configuration.whitelist.includes(req.path)) {
                     console.log("Forbidden.");
                     return res.status(401).end();
                 }
@@ -95,7 +90,7 @@ export default class ProxyServer {
                 }
             });
 
-            this.baseServer = server.listen(this.conf.port, resolve);
+            this.baseServer = server.listen(Configuration.port, resolve);
         });
     }
 

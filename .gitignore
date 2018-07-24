@@ -2,5 +2,4 @@ node_modules/
 .DS_Store
 out/*
 .vscode/
-src/Config.ts
 yarn-error.log

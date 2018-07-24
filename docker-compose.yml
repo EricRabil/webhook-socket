@@ -1,0 +1,17 @@
+version: "3.5"
+services:
+  api:
+    restart: always
+    build: .
+    ports:
+      - "127.0.0.1:9090:9090"
+    networks:
+      default:
+        aliases:
+          - webhook-socket
+    tmpfs:
+      - /tmp/webhook-socket
+
+networks:
+  default:
+    name: webhook_socket_layer
