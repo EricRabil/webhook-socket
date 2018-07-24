@@ -13,7 +13,7 @@ RUN yarn install
 COPY . .
 
 # Build app source
-RUN yarn prod
+RUN yarn build
 
 EXPOSE 9090
 CMD [ "yarn", "start" ]
