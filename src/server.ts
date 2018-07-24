@@ -1,4 +1,5 @@
 import bodyParser from "body-parser";
+import crypto from "crypto";
 import express from "express";
 import uws from "uws";
 import { RequestHandler, Request } from "../node_modules/@types/express-serve-static-core";
@@ -20,6 +21,16 @@ declare module "express-serve-static-core" {
     interface IRouter extends RequestHandler {
         ws: (event: string, cb: (ws: _WebSocket, req: Request) => any) => this;
     }
+}
+
+/**
+ * Creates a HMAC SHA-256 hash created from the app TOKEN and
+ * your app Consumer Secret.
+ * @param  token  the token provided by the incoming GET request
+ * @return string
+ */
+function createChallengeResponse(crc_token: string, consumer_secret: string) {
+  return crypto.createHmac('sha256', consumer_secret).update(crc_token).digest('base64');
 }
 
 export default class ProxyServer {
@@ -73,11 +84,21 @@ export default class ProxyServer {
                 }
                 next();
             });
+
+            // twitter crc_token
+            server.use((req, res, next) => {
+                if (req.query.crc_token) {
+                    const hash = createChallengeResponse(req.query.crc_token, Configuration.twitterSecret || "invalid :(");
+
+                    return res.status(200).json({response_token: 'sha_256=' + hash});
+                }
+                return next();
+            });
             
             // the mgaic!
             server.all("*", ({path, body}, res, next) => {
                 res.end();
-            
+
                 const dispatch = JSON.stringify({
                     path,
                     body
