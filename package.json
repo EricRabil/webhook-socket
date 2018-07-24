@@ -5,7 +5,8 @@
   "main": "out/index.js",
   "repository": "https://github.com/EricRabil/webhook-socket.git",
   "scripts": {
-    "test": "mocha -r ts-node/register tests/*.test.ts"
+    "test": "mocha -r ts-node/register tests/*.test.ts",
+    "build": "tsc -p ."
   },
   "author": "EricRabil <ericjrabil@gmail.com>",
   "license": "MIT",
