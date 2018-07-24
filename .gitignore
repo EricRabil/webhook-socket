@@ -3,3 +3,4 @@ node_modules/
 out/*
 .vscode/
 yarn-error.log
+src/config.ts
