@@ -88,9 +88,10 @@ export default class ProxyServer {
             // twitter crc_token
             server.use((req, res, next) => {
                 if (req.query.crc_token) {
+
                     const hash = createChallengeResponse(req.query.crc_token, Configuration.twitterSecret || "invalid :(");
 
-                    return res.status(200).json({response_token: 'sha_256=' + hash});
+                    return res.status(200).json({response_token: 'sha256=' + hash});
                 }
                 return next();
             });
